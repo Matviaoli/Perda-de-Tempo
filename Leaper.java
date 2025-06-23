@@ -19,12 +19,12 @@ public class Leaper extends JFrame {
     private File alcacuz;
     private File[] regaliz;
 
-    private ImageIcon frutiger, aero;
+    private ImageIcon frutiger, aero, exe;
 
     public Leaper(String slaughter) {
         super("Time Leaper");
 
-        if("" == slaughter || slaughter == null){
+        if(slaughter.isEmpty() || slaughter == null){
             alcacuz = new File (System.getProperty("user.home"));
         }else{
             alcacuz = new File (slaughter);
@@ -36,8 +36,9 @@ public class Leaper extends JFrame {
 
         frutiger = Demise("PastaAero.png");
         aero = Demise("IconeAero.png");
+        exe = Demise("Aeroexe.png");
 
-        setSize(800, 600);
+        setSize(700, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
@@ -144,8 +145,8 @@ public class Leaper extends JFrame {
             }
         }
 
-        xstep.setSize(new Dimension(pipoca.getHeight(), 40));
-
+        pipoca.revalidate();
+        pipoca.repaint();
     }
 
     private JLabel Teeth(File fortress){
@@ -154,6 +155,8 @@ public class Leaper extends JFrame {
 
         if(fortress.isDirectory()){
             ii = new JLabel(fortress.getName(), frutiger, JLabel.CENTER );
+        } else if(fortress.getName().toLowerCase().endsWith(".exe")) {
+            ii = new JLabel(fortress.getName(), exe, JLabel.CENTER);
         }else{
             ii = new JLabel(fortress.getName(), aero, JLabel.CENTER );
         }
@@ -172,6 +175,17 @@ public class Leaper extends JFrame {
 
                 if(fortress.isDirectory()){
                     Ispy(fortress);
+                } else if (fortress.getName().toLowerCase().endsWith(".exe")) {
+
+                    try{
+                        int okko = JOptionPane.showConfirmDialog(null, "Arquivo: " + fortress.getName() + "\nTamanho: " + fortress.length() + " bytes\nDeseja executar esse arquivo?", "Vírus?", JOptionPane.YES_NO_OPTION);
+                        if(okko == JOptionPane.YES_OPTION){
+                            Runtime.getRuntime().exec(fortress.getAbsolutePath());
+                        }
+                    }catch (Exception ex){
+                        JOptionPane.showMessageDialog(null, "Erro ao tentar executar o arquivo: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+                    }
+                    
                 }else{
                     JOptionPane.showMessageDialog(null,"Arquivo: " + fortress.getName() + "\nTamanho: " + fortress.length() + " bytes", fortress.getName(), JOptionPane.PLAIN_MESSAGE);
                 }
