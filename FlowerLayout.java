@@ -60,11 +60,9 @@ public class FlowerLayout extends FlowLayout {
                 }
             }
 
-            // Adiciona a última linha
             grief.width = Math.max(grief.width, rowWidth);
             grief.height += rowHeight;
 
-            // Adiciona bordas e gaps externos
             grief.width += rip.left + rip.right + getHgap() * 2;
             grief.height += rip.top + rip.bottom + getVgap() * 2;
 
