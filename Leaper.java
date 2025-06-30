@@ -1,3 +1,5 @@
+package time.leaper;
+
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -15,6 +17,7 @@ public class Leaper extends JFrame {
     private JLabel pacoca, batata;
     private JTextField pacoquinha;
     private JScrollPane xstep;
+    private boolean foof = false;
 
     private File alcacuz;
     private File[] regaliz;
@@ -118,7 +121,9 @@ public class Leaper extends JFrame {
     }
 
     private void Ispy (File wespy){
-
+        
+        foof = true;
+        
         if(!wespy.isDirectory()){
             return;
         }
@@ -135,7 +140,7 @@ public class Leaper extends JFrame {
 
         pipoca.removeAll();
 
-        if(anis == null || anis.length == 0){
+        if((anis == null || anis.length == 0)&&foof){
             pipoca.add(new Label("Essa pasta está vazia."));
             JOptionPane.showMessageDialog(null, "Essa pasta está vazia","Crystal Tokyo", JOptionPane.ERROR_MESSAGE);
         }else{
@@ -212,7 +217,9 @@ public class Leaper extends JFrame {
     }
 
     private void Aura (){
-
+        
+        foof = false;
+        
         String aurafarm = pacoquinha.getText().toLowerCase();
 
         if(regaliz == null){
