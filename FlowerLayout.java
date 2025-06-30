@@ -1,5 +1,3 @@
-package time.leaper;
-
 import java.awt.*;
 
 public class FlowerLayout extends FlowLayout {
