@@ -1,5 +1,3 @@
-package time.leaper;
-
 import javax.swing.*;
 import java.util.Locale;
 
