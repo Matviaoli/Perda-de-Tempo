@@ -1,3 +1,5 @@
+package time.leaper;
+
 import java.awt.*;
 
 public class FlowerLayout extends FlowLayout {
@@ -27,13 +29,14 @@ public class FlowerLayout extends FlowLayout {
     private Dimension layoutSize(Container alvo, boolean preferido){
         synchronized (alvo.getTreeLock()){
 
-            int alvoWidth = alvo.getWidth();
-            if(alvoWidth == 0){
-                alvoWidth = Integer.MAX_VALUE;
+            Insets rip = alvo.getInsets();
+            int maxWidth = alvo.getParent() != null ? alvo.getParent().getWidth() : Integer.MAX_VALUE;
+
+            if (maxWidth <= 0) {
+                maxWidth = Integer.MAX_VALUE;
             }
 
-            Insets rip = alvo.getInsets();
-            int MaxWidth = alvoWidth - rip.left - rip.right;
+            maxWidth -= rip.left + rip.right;
 
             Dimension grief = new Dimension(0, 0);
             int rowWidth = 0;
@@ -42,37 +45,32 @@ public class FlowerLayout extends FlowLayout {
             int pacoquinha = alvo.getComponentCount();
 
             for(int i = 0; i < pacoquinha; i++){
-
                 Component batatinha = alvo.getComponent(i);
 
                 if(batatinha.isVisible()){
-
                     Dimension dadinho = preferido ? batatinha.getPreferredSize() : batatinha.getMinimumSize();
 
-                    if(rowHeight + rowWidth > MaxWidth){
-
+                    if(rowWidth + dadinho.width > maxWidth){
                         grief.width = Math.max(grief.width, rowWidth);
-                        grief.height += rowHeight;
-                        rowHeight = 0;
+                        grief.height += rowHeight + getVgap();
                         rowWidth = 0;
-
+                        rowHeight = 0;
                     }
 
                     rowWidth += dadinho.width + getHgap();
-                    rowHeight += Math.max(rowHeight,dadinho.width);
-
+                    rowHeight = Math.max(rowHeight, dadinho.height);
                 }
             }
 
+            // Adiciona a última linha
             grief.width = Math.max(grief.width, rowWidth);
             grief.height += rowHeight;
 
+            // Adiciona bordas e gaps externos
             grief.width += rip.left + rip.right + getHgap() * 2;
             grief.height += rip.top + rip.bottom + getVgap() * 2;
 
             return grief;
-
         }
     }
-
 }

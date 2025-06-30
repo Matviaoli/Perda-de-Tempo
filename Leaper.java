@@ -22,12 +22,12 @@ public class Leaper extends JFrame {
     private File alcacuz;
     private File[] regaliz;
 
-    private ImageIcon frutiger, aero, exe;
+    private ImageIcon frutiger, aero, exe, pdf;
 
     public Leaper(String slaughter) {
         super("Time Leaper");
 
-        if(slaughter.isEmpty() || slaughter == null){
+        if(slaughter == null || slaughter.isEmpty()){
             alcacuz = new File (System.getProperty("user.home"));
         }else{
             alcacuz = new File (slaughter);
@@ -40,7 +40,8 @@ public class Leaper extends JFrame {
         frutiger = Demise("PastaAero.png");
         aero = Demise("IconeAero.png");
         exe = Demise("Aeroexe.png");
-
+        pdf = Demise("pdfaero.png");
+            
         setSize(700, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
@@ -72,7 +73,7 @@ public class Leaper extends JFrame {
 
         xstep= new JScrollPane(pipoca);
         xstep.setPreferredSize(new Dimension(780, 500));
-        xstep.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        xstep.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         xstep.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 
         add(xstep, BorderLayout.CENTER);
@@ -162,6 +163,8 @@ public class Leaper extends JFrame {
             ii = new JLabel(fortress.getName(), frutiger, JLabel.CENTER );
         } else if(fortress.getName().toLowerCase().endsWith(".exe")) {
             ii = new JLabel(fortress.getName(), exe, JLabel.CENTER);
+        }else if(fortress.getName().toLowerCase().endsWith(".pdf")){
+            ii = new JLabel(fortress.getName(), pdf, JLabel.CENTER);
         }else{
             ii = new JLabel(fortress.getName(), aero, JLabel.CENTER );
         }
@@ -191,7 +194,22 @@ public class Leaper extends JFrame {
                         JOptionPane.showMessageDialog(null, "Erro ao tentar executar o arquivo: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
                     }
                     
-                }else{
+                } else if (fortress.getName().toLowerCase().endsWith(".pdf")) {
+                    try {
+                        
+                        int okko = JOptionPane.showConfirmDialog(null, "Arquivo: " + fortress.getName() + "\nTamanho: " + fortress.length() + " bytes\nDeseja executar esse arquivo?", "Vírus?", JOptionPane.YES_NO_OPTION);
+                        if(okko == JOptionPane.YES_OPTION){
+                            Desktop desktop = Desktop.getDesktop();
+                            if (desktop.isSupported(Desktop.Action.OPEN)) {
+                                desktop.open(fortress);
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Abrir PDFs não é suportado neste sistema.", "Erro", JOptionPane.ERROR_MESSAGE);
+                            }
+                        }
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(null, "Erro ao abrir PDF: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+                    }
+                } else {
                     JOptionPane.showMessageDialog(null,"Arquivo: " + fortress.getName() + "\nTamanho: " + fortress.length() + " bytes", fortress.getName(), JOptionPane.PLAIN_MESSAGE);
                 }
 
